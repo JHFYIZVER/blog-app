@@ -1,5 +1,4 @@
 "use client";
-import * as React from "react";
 import MoonIcon from "../../../shared/icons/moon-icon";
 import SunIcon from "../../../shared/icons/sun-icon";
 import { useTheme } from "next-themes";

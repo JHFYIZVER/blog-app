@@ -54,13 +54,12 @@ const SignInForm = () => {
       <label className="my-3 flex flex-col">
         <div className="text-xs flex items-center justify-between md:text-sm lg:text-base mb-2">
           Пароль
-          <Button
-            aria-label="forgot password button"
-            variant={"link"}
-            className="cursor-pointer p-0 m-0 ml-auto"
+          <Link
+            href="/auth/reset-password"
+            className="cursor-pointer p-0 m-0 ml-auto hover:underline"
           >
             Забыли пароль?
-          </Button>
+          </Link>
         </div>
         <Input aria-label="password input" type="password" />
       </label>

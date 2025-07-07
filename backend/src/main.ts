@@ -2,13 +2,12 @@ import { parseBoolean } from './libs/common/utils/parse-boolean.util';
 import { ms, StringValue } from './libs/common/utils/ms.util';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { RedisStore } from 'connect-redis';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
+import RedisStore from 'connect-redis';
 import IORedis from 'ioredis';
-
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -38,9 +37,9 @@ async function bootstrap() {
         sameSite: 'lax',
       },
       store: new RedisStore({
-      client: redis,
-      prefix: config.getOrThrow<string>('SESSION_FOLDER'),
-    }),
+        client: redis,
+        prefix: config.getOrThrow<string>('SESSION_FOLDER'),
+      }),
     }),
   );
 

@@ -40,8 +40,8 @@ export class UserService {
 
   public async create(
     email: string,
-    password: string,
     displayName: string,
+    password: string,
     picture: string,
     method: AuthMethod,
     isVerified: boolean,
@@ -49,8 +49,8 @@ export class UserService {
     const user = await this.prismaService.user.create({
       data: {
         email,
-        password: password ? await hash(password) : '',
         displayName,
+        password: password ? await hash(password) : '',
         picture,
         method,
         isVerified,

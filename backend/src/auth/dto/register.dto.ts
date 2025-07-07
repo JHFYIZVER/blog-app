@@ -10,7 +10,7 @@ import { IsPasswordsMatchingConstraint } from 'src/libs/common/decorators/is-pas
 export class RegisterDto {
   @IsString({ message: 'Имя должно быть строкой.' })
   @IsNotEmpty({ message: 'Имя обязательно для заполнения.' })
-  name: string;
+  displayName: string;
 
   @IsString({ message: 'Email должен быть строкой.' })
   @IsEmail({}, { message: 'Некорректный формат email.' })

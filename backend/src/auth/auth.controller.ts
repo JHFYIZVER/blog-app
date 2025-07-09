@@ -1,16 +1,16 @@
 import {
   BadRequestException,
-  Body,
   Controller,
-  Get,
-  HttpCode,
   HttpStatus,
-  Param,
-  Post,
+  UseGuards,
+  HttpCode,
   Query,
+  Param,
+  Body,
+  Post,
+  Get,
   Req,
   Res,
-  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';

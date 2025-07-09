@@ -5,6 +5,8 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { EmailConfirmationService } from './email-confirmation/email-confirmation.service';
+import { TwoFactorAuthService } from './two-factor-auth/two-factor-auth.service';
 import { ProviderService } from './provider/provider.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserService } from 'src/user/user.service';
@@ -22,6 +24,8 @@ export class AuthService {
     private readonly providerService: ProviderService,
     private readonly userService: UserService,
     private readonly configService: ConfigService,
+    private readonly emailConfirmationService: EmailConfirmationService,
+    private readonly twoFactorAuthService: TwoFactorAuthService,
   ) {}
   public async register(req: Request, dto: RegisterDto) {
     const isExists = await this.userService.findByEmail(dto.email);
@@ -39,7 +43,12 @@ export class AuthService {
       false,
     );
 
-    return this.saveSession(req, newUser);
+    await this.emailConfirmationService.sendVerificationToken(newUser.email);
+
+    return {
+      message:
+        'Вы успешно зарегистрировались. Пожалуйста, подствердите ваш email. Сообщение было отправлено на вашу почту.',
+    };
   }
 
   public async login(req: Request, dto: LoginDto) {
@@ -56,6 +65,29 @@ export class AuthService {
     if (!isValidPassword) {
       throw new UnauthorizedException(
         'Неверный пароль, проверьте правильность введенных данных',
+      );
+    }
+
+    if (!user.isVerified) {
+      await this.emailConfirmationService.sendVerificationToken(user.email);
+      throw new UnauthorizedException(
+        'Ваш email не подтвержден. Пожалуйста, проверьте вашу почту и подтвердите адрес.',
+      );
+    }
+
+    if (user.isTwoFactorEnabled) {
+      if (!dto.code) {
+        await this.twoFactorAuthService.sendTwoFactorToken(user.email);
+
+        return {
+          message:
+            'Проверьте вашу почту. Требуется код двухфакторной аутентификации.',
+        };
+      }
+
+      await this.twoFactorAuthService.validateTwoFactorToken(
+        user.email,
+        dto.code,
       );
     }
 

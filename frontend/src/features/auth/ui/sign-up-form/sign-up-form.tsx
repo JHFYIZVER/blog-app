@@ -8,7 +8,7 @@ import { useTheme } from "next-themes";
 import { useState } from "react";
 import Link from "next/link";
 import { useRegisterMutation } from "../../hooks/useRegisterMutation";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import SocialAuth from "../../social/ui/social-auth";
 
 const initialFormState: RegisterFormData = {

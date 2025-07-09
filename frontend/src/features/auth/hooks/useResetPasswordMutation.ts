@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toastMessageHandler } from "@/shared/lib/toast-message-handler";
 
 import { passwordRecoveryService } from "../services/password-recovery.service";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { TypeResetPasswordSchema } from "../lib/schema";
 
 export function useResetPasswordMutation() {
@@ -17,9 +17,9 @@ export function useResetPasswordMutation() {
       recaptcha: string;
     }) => passwordRecoveryService.reset(values, recaptcha),
     onSuccess() {
-      toast.success(
-        "Проверьте почту. На вашу почту была отправлена ссылка для подтверждения."
-      );
+      toast.success("Проверьте почту", {
+        description: "На вашу почту была отправлена ссылка для подтверждения.",
+      });
     },
     onError(error) {
       toastMessageHandler(error);

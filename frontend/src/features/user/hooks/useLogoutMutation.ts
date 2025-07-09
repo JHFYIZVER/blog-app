@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { toastMessageHandler } from "@/shared/lib/toast-message-handler";
 import { authService } from "@/features/auth/services/auth.service";
 

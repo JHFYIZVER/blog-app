@@ -1,4 +1,4 @@
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 export function toastMessageHandler(error: Error) {
   if (error.message) {

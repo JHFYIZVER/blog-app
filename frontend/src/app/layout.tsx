@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import { MainProvider } from "@/shared/provider/main-provider";
 import { Nunito_Sans } from "next/font/google";
-import { ThemeProvider } from "@/shared/provider/theme-provider";
-import { ToastContainer } from "react-toastify";
+import type { Metadata } from "next";
 import "./globals.css";
-import { TanstackQueryProvider } from "@/shared/provider/tanstack-query-provider";
+
+
 
 const nunitoSans = Nunito_Sans({
   variable: "--font-geist-sans",
@@ -23,17 +23,7 @@ export default function RootLayout({
   return (
     <html lang="ru" suppressHydrationWarning>
       <body className={`${nunitoSans.variable} antialiased`}>
-        <TanstackQueryProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-            <ToastContainer />
-          </ThemeProvider>
-        </TanstackQueryProvider>
+        <MainProvider>{children}</MainProvider>
       </body>
     </html>
   );

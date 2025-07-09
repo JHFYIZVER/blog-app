@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { toastMessageHandler } from '@/shared/lib/toast-message-handler'
+import { toastMessageHandler } from "@/shared/lib/toast-message-handler";
 
 import { passwordRecoveryService } from "../services/password-recovery.service";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { TypeNewPasswordSchema } from "../lib/schema";
 
 export function useNewPasswordMutation() {
@@ -23,9 +23,9 @@ export function useNewPasswordMutation() {
       recaptcha: string;
     }) => passwordRecoveryService.new(values, token, recaptcha),
     onSuccess() {
-      toast.success(
-        "Пароль успешно изменён. Теперь вы можете войти в свой аккаунт."
-      );
+      toast.success("Пароль успешно изменён", {
+        description: "Теперь вы можете войти в свой аккаунт.",
+      });
       router.push("/dashboard/settings");
     },
     onError(error) {

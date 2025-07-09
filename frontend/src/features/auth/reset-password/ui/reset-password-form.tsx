@@ -7,7 +7,7 @@ import { resetPasswordSchema, TypeResetPasswordSchema } from "../../lib/schema";
 import { useResetPasswordMutation } from "../../hooks/useResetPasswordMutation";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useTheme } from "next-themes";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const initialFormState: TypeResetPasswordSchema = {
   email: "",

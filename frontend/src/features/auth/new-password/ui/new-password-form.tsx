@@ -6,7 +6,7 @@ import { useNewPasswordMutation } from "../../hooks/useNewPasswordMutation";
 import { newPasswordSchema, TypeNewPasswordSchema } from "../../lib/schema";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useTheme } from "next-themes";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import Link from "next/link";
 
 const initialFormState: TypeNewPasswordSchema = {

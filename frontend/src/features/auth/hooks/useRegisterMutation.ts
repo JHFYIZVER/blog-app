@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toastMessageHandler } from "@/shared/lib/toast-message-handler";
 import { authService } from "../services/auth.service";
 import { RegisterFormData } from "../lib/schema";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 export function useRegisterMutation(reset: any) {
@@ -17,9 +17,7 @@ export function useRegisterMutation(reset: any) {
       recaptcha: string;
     }) => authService.register(values, recaptcha),
     onSuccess(data: any) {
-      toast.success(
-        "Вы успешно зарегистрировались. Пожалуйста, подтвердите ваш email. Сообщение было отправлено на вашу почту.",
-      );
+      toastMessageHandler(data);
       router.replace("/auth/sign-in");
       reset();
     },

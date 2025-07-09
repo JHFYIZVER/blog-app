@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
 
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { toastMessageHandler } from "@/shared/lib/toast-message-handler";
 import { authService } from "../services/auth.service";
 import { LoginFormData } from "../lib/schema";

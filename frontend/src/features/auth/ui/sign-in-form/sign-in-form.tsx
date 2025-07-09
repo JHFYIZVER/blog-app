@@ -7,7 +7,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { useTheme } from "next-themes";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useState } from "react";
 import Link from "next/link";
 

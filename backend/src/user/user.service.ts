@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthMethod } from '@prisma/client';
@@ -67,13 +71,23 @@ export class UserService {
   public async update(userId: string, dto: UpdateUserDto) {
     const user = await this.findById(userId);
 
+    const existingUser = await this.prismaService.user.findFirst({
+      where: {
+        email: dto.email,
+      },
+    });
+
+    if (existingUser && existingUser.id !== user.id) {
+      throw new ConflictException('Email уже занят другим пользователем');
+    }
+
     const updatedUser = await this.prismaService.user.update({
       where: {
         id: user.id,
       },
       data: {
         email: dto.email,
-        displayName: dto.name,
+        displayName: dto.displayName,
         isTwoFactorEnabled: dto.isTwoFactorEnabled,
       },
     });

@@ -43,7 +43,7 @@ const SignInForm = () => {
 
   const { login, isLoadingLogin } = useLoginMutation(setIsShowFactor);
 
-  const humdleSumbit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
@@ -65,7 +65,7 @@ const SignInForm = () => {
   return (
     <form
       className="max-w-lg w-full mx-auto rounded-lg bg-accent p-5 space-y-4 lg:space-y-6"
-      onSubmit={humdleSumbit}
+      onSubmit={handleSubmit}
     >
       <h1 className="text-center font-bold text-[clamp(22px,2vw,32px)]">
         Авторизация

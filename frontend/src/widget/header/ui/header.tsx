@@ -1,5 +1,4 @@
 "use client";
-
 import { ThemeSwitcher } from "@/features/theme-switch";
 import { CommandIcon } from "lucide-react";
 import { useRouter } from "next/navigation";

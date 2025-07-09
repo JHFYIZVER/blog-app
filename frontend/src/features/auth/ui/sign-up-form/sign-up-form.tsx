@@ -7,6 +7,9 @@ import { Input } from "@/shared/ui/input";
 import { useTheme } from "next-themes";
 import { useState } from "react";
 import Link from "next/link";
+import { useRegisterMutation } from "../../hooks/useRegisterMutation";
+import { toast } from "react-toastify";
+import SocialAuth from "../../social/ui/social-auth";
 
 const initialFormState: RegisterFormData = {
   displayName: "",
@@ -41,6 +44,16 @@ const SignUpForm = () => {
     return res.error.format();
   };
 
+  const reset = () =>
+    setUserFormData({
+      displayName: "",
+      password: "",
+      email: "",
+      repeatPassword: "",
+    });
+
+  const { register, isLoadingRegister } = useRegisterMutation(reset);
+
   const humdleSumbit = (e: React.FormEvent) => {
     e.preventDefault();
     try {
@@ -50,7 +63,11 @@ const SignUpForm = () => {
         return;
       }
       const validatedData = registerSchema.parse(formData);
-      console.log(validatedData);
+      if (!recaptchaValue) {
+        toast.info("Завершите recaptcha");
+        return;
+      }
+      register({ values: validatedData, recaptcha: recaptchaValue });
     } catch (error) {}
   };
 
@@ -70,7 +87,7 @@ const SignUpForm = () => {
       <label className="my-3 flex flex-col">
         <span
           className={`text-xs md:text-sm lg:text-base mb-2 ${
-            errors?.password ? "text-red-500" : ""
+            errors?.displayName ? "text-red-500" : ""
           }`}
         >
           Имя
@@ -80,6 +97,7 @@ const SignUpForm = () => {
           onChange={(e) =>
             setUserFormData((l) => ({ ...l, displayName: e.target.value }))
           }
+          disabled={isLoadingRegister}
           aria-label="username input"
           type="text"
         />
@@ -90,7 +108,7 @@ const SignUpForm = () => {
       <label className="my-3 flex flex-col">
         <span
           className={`text-xs md:text-sm lg:text-base mb-2 ${
-            errors?.password ? "text-red-500" : ""
+            errors?.email ? "text-red-500" : ""
           }`}
         >
           Email
@@ -100,6 +118,7 @@ const SignUpForm = () => {
           onChange={(e) =>
             setUserFormData((l) => ({ ...l, email: e.target.value }))
           }
+          disabled={isLoadingRegister}
           aria-label="email input"
           type="email"
         />
@@ -120,6 +139,7 @@ const SignUpForm = () => {
           onChange={(e) =>
             setUserFormData((l) => ({ ...l, password: e.target.value }))
           }
+          disabled={isLoadingRegister}
           aria-label="password input"
           type="password"
         />
@@ -130,7 +150,7 @@ const SignUpForm = () => {
       <label className="my-3 flex flex-col">
         <span
           className={`text-xs md:text-sm lg:text-base mb-2 ${
-            errors?.password ? "text-red-500" : ""
+            errors?.repeatPassword ? "text-red-500" : ""
           }`}
         >
           Повторите пароль
@@ -140,6 +160,7 @@ const SignUpForm = () => {
           onChange={(e) =>
             setUserFormData((l) => ({ ...l, repeatPassword: e.target.value }))
           }
+          disabled={isLoadingRegister}
           aria-label="repeat password input"
           type="password"
         />
@@ -147,25 +168,8 @@ const SignUpForm = () => {
           {errors?.repeatPassword?._errors.join(", ")}
         </div>
       </label>
-      <p className="w-full relative text-center before:left-0 after:right-0 before:top-1/2 after:top-1/2 before:w-[calc(1/2*100%-1.5rem)] after:w-[calc(1/2*100%-1.5rem)] before:absolute after:absolute before:h-0.5 after:h-0.5 before:bg-foreground after:bg-foreground">
-        или
-      </p>
-      <div className="grid gap-5 grid-cols-1 md:grid-cols-2">
-        <Button
-          aria-label="login button with google"
-          variant={"outline"}
-          className="w-full cursor-pointer"
-        >
-          Google
-        </Button>
-        <Button
-          aria-label="login button with yandex"
-          variant={"outline"}
-          className="w-full cursor-pointer"
-        >
-          Yandex
-        </Button>
-      </div>
+
+      <SocialAuth isLoadingAuth={isLoadingRegister} />
       <div className="flex w-full justify-center">
         <ReCAPTCHA
           sitekey={process.env.GOOGLE_RECAPTCHA_SITE_KEY as string}
@@ -174,7 +178,7 @@ const SignUpForm = () => {
         />
       </div>
       <Button
-        disabled={!recaptchaValue}
+        disabled={isLoadingRegister}
         aria-label="login button"
         className="w-full cursor-pointer"
       >

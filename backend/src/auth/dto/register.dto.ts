@@ -32,5 +32,5 @@ export class RegisterDto {
   @Validate(IsPasswordsMatchingConstraint, {
     message: 'Пароли не совпадают.',
   })
-  passwordRepeat: string;
+  repeatPassword: string;
 }

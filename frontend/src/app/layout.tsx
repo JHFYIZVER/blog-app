@@ -3,6 +3,7 @@ import { Nunito_Sans } from "next/font/google";
 import { ThemeProvider } from "@/shared/provider/theme-provider";
 import { ToastContainer } from "react-toastify";
 import "./globals.css";
+import { TanstackQueryProvider } from "@/shared/provider/tanstack-query-provider";
 
 const nunitoSans = Nunito_Sans({
   variable: "--font-geist-sans",
@@ -20,17 +21,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru">
+    <html lang="ru" suppressHydrationWarning>
       <body className={`${nunitoSans.variable} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-          <ToastContainer />
-        </ThemeProvider>
+        <TanstackQueryProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            {children}
+            <ToastContainer />
+          </ThemeProvider>
+        </TanstackQueryProvider>
       </body>
     </html>
   );

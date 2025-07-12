@@ -1,4 +1,5 @@
 import { parseBoolean } from './libs/common/utils/parse-boolean.util';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { ms, StringValue } from './libs/common/utils/ms.util';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -8,9 +9,10 @@ import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import RedisStore from 'connect-redis';
 import IORedis from 'ioredis';
+import { join } from 'path';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   const config = app.get(ConfigService);
   const redis = new IORedis(config.getOrThrow('REDIS_URI'));
@@ -42,6 +44,16 @@ async function bootstrap() {
       }),
     }),
   );
+
+  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+    prefix: '/uploads/',
+    setHeaders: (res, path) => {
+      if (path.endsWith('.webp')) {
+        res.set('Content-Type', 'image/webp');
+      }
+      res.set('Cache-Control', 'public, max-age=31536000');
+    },
+  });
 
   app.enableCors({
     origin: config.getOrThrow<string>('ALLOWED_ORIGIN'),

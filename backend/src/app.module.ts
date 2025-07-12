@@ -9,6 +9,8 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
+import { PostModule } from './post/post.module';
+import { ImageProcessingModule } from './post/image-processing/image-processing.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { Module } from '@nestjs/common';
     EmailConfirmationModule,
     PasswordRecoveryModule,
     TwoFactorAuthModule,
+    PostModule,
+    ImageProcessingModule,
   ],
 })
 export class AppModule {}

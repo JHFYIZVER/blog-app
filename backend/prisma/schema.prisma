@@ -94,7 +94,7 @@ model Post {
 
   title String
   description String
-  image String @db.Text
+  image String? @db.Text
   
   
   user User @relation(references: [id], fields: [userId], onDelete: Cascade)
@@ -104,18 +104,30 @@ model Post {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   like Like[]
+  tag Tag[]
 
   @@map("posts")
+}
+
+model Tag {
+  id String @id @default(uuid())
+
+  name String
+
+  post Post @relation(references: [id], fields: [postId], onDelete: Cascade)
+  postId String @map("post_id")
+
+  @@map("tags")
 }
 
 model Like {
   id String @id @default(uuid())
 
   user User @relation(references: [id], fields: [userId], onDelete: Cascade)
-  postId String @map("post_id")
+  userId String @map("user_id")
 
   post Post @relation(references: [id], fields: [postId], onDelete: Cascade)
-  userId String @map("user_id")
+  postId String @map("post_id")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

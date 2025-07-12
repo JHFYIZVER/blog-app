@@ -47,6 +47,9 @@ model User {
   method AuthMethod
 
   accounts Account[]
+  post Post[]
+  like Like[]
+
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -84,6 +87,41 @@ model Token {
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("tokens")
+}
+
+model Post {
+  id String @id @default(uuid())
+
+  title String
+  description String
+  image String @db.Text
+  
+  
+  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
+  userId String @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  like Like[]
+
+  @@map("posts")
+}
+
+model Like {
+  id String @id @default(uuid())
+
+  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
+  postId String @map("post_id")
+
+  post Post @relation(references: [id], fields: [postId], onDelete: Cascade)
+  userId String @map("user_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, postId])
+  @@map("likes")
 }
 
 

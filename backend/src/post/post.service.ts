@@ -19,7 +19,9 @@ export class PostService {
         id,
       },
       include: {
-        like: true,
+        _count: {
+          select: { like: true },
+        },
         tag: true,
       },
     });
@@ -66,7 +68,9 @@ export class PostService {
         where,
         orderBy,
         include: {
-          like: true,
+          _count: {
+            select: { like: true },
+          },
           tag: true,
         },
       }),
@@ -102,7 +106,6 @@ export class PostService {
         },
       },
       include: {
-        like: true,
         tag: true,
       },
     });
@@ -110,7 +113,7 @@ export class PostService {
     return post;
   }
 
-  public async update(postId: string, userId: string, dto: UpdatePostDto) {
+  public async update(userId: string, postId: string, dto: UpdatePostDto) {
     const post = await this.findById(postId);
     if (post.userId !== userId) {
       throw new ForbiddenException('Вы не можете изменить этот пост');
@@ -138,7 +141,6 @@ export class PostService {
       },
       data: updateData,
       include: {
-        like: true,
         tag: true,
       },
     });
